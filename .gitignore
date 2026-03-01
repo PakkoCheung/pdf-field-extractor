@@ -1,0 +1,14 @@
+## .NET build outputs
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## NuGet packages
+*.nupkg
+packages/
+
+## OS generated files
+.DS_Store
+Thumbs.db

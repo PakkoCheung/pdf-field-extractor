@@ -40,6 +40,9 @@ partial class Form1
         lstPdfFiles.ItemHeight = 15;
         lstPdfFiles.Location = new Point(12, 54);
         lstPdfFiles.Name = "lstPdfFiles";
+        lstPdfFiles.AllowDrop = true;
+        lstPdfFiles.DragEnter += lstPdfFiles_DragEnter;
+        lstPdfFiles.DragDrop += lstPdfFiles_DragDrop;
         lstPdfFiles.Size = new Size(580, 139);
         lstPdfFiles.TabIndex = 1;
 

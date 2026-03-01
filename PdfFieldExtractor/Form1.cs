@@ -1,3 +1,4 @@
+using System.Linq;
 using Newtonsoft.Json;
 using PdfFieldExtractor.Models;
 using PdfFieldExtractor.Services;
@@ -123,5 +124,35 @@ public partial class Form1 : Form
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             lblStatus.Text = "SQL generation failed.";
         }
+    }
+
+    private void lstPdfFiles_DragEnter(object sender, DragEventArgs e)
+    {
+        if (e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+            e.Effect = DragDropEffects.Copy;
+        else
+            e.Effect = DragDropEffects.None;
+    }
+
+    private void lstPdfFiles_DragDrop(object sender, DragEventArgs e)
+    {
+        if (e.Data == null || !e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+
+        var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+        if (files == null || files.Length == 0) return;
+
+        var pdfs = files.Where(f => Path.GetExtension(f).Equals(".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (pdfs.Length == 0) return;
+
+        foreach (var p in pdfs)
+        {
+            if (!_selectedPdfPaths.Contains(p))
+            {
+                _selectedPdfPaths.Add(p);
+                lstPdfFiles.Items.Add(Path.GetFileName(p));
+            }
+        }
+
+        lblStatus.Text = $"{_selectedPdfPaths.Count} file(s) selected (dragged).";
     }
 }
